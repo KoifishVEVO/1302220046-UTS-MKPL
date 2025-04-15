@@ -7,6 +7,13 @@ import java.util.List;
 
 public class Employee {
 
+	public enum EmployeeGrade {
+	grade_1,
+	grade_2,
+	grade_3
+}
+
+
 	private String employeeId;
 	private String firstName;
 	private String lastName;
@@ -53,23 +60,28 @@ public class Employee {
 	 */
 	
 	public void setMonthlySalary(int grade) {	
-		if (grade == 1) {
-			monthlySalary = 3000000;
-			if (isForeigner) {
-				monthlySalary = (int) (3000000 * 1.5);
-			}
-		}else if (grade == 2) {
-			monthlySalary = 5000000;
-			if (isForeigner) {
-				monthlySalary = (int) (3000000 * 1.5);
-			}
-		}else if (grade == 3) {
-			monthlySalary = 7000000;
-			if (isForeigner) {
-				monthlySalary = (int) (3000000 * 1.5);
-			}
+		int newSalary;
+
+		switch (grade) {
+			case grade_1:
+				newSalary = 3000000;
+				break;
+			case grade_2:
+				newSalary = 5000000;
+				break;
+			case grade_3:
+				newSalary = 7000000;
+				break;
+			default:
+				throw new IllegalArgumentException("employee grade tidak diketahui: " + grade);
 		}
-	}
+
+		if (isForeigner) {
+			newSalary = (int) (newSalary * 1.5);
+		}
+
+		this.monthlySalary = newSalary;
+		}
 	
 	public void setAnnualDeductible(int deductible) {	
 		this.annualDeductible = deductible;
