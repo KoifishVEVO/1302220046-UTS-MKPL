@@ -13,6 +13,10 @@ public class Employee {
 	grade_3
 }
 
+private static final int grade_1_salary = 3000000;
+private static final int grade_2_salary = 5000000;
+private static final int grade_3_salary = 7000000;
+private static final double foreigner_salary = 1.5;
 
 	private String employeeId;
 	private String firstName;
@@ -64,20 +68,20 @@ public class Employee {
 
 		switch (grade) {
 			case grade_1:
-				newSalary = 3000000;
+				newSalary = grade_1_salary;
 				break;
 			case grade_2:
-				newSalary = 5000000;
+				newSalary = grade_2_salary;
 				break;
 			case grade_3:
-				newSalary = 7000000;
+				newSalary = grade_3_salary;
 				break;
 			default:
 				throw new IllegalArgumentException("employee grade tidak diketahui: " + grade);
 		}
 
 		if (isForeigner) {
-			newSalary = (int) (newSalary * 1.5);
+			newSalary = (int) (newSalary * foreigner_salary);
 		}
 
 		this.monthlySalary = newSalary;
