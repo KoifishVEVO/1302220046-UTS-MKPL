@@ -28,9 +28,6 @@ public class Employee {
 		MALE,
 		FEMALE
 	}
-private static final int grade_1_salary = 3000000;
-private static final int grade_2_salary = 5000000;
-private static final int grade_3_salary = 7000000;
 private static final double foreigner_salary = 1.5;
 
 	private String employeeId;
@@ -40,7 +37,7 @@ private static final double foreigner_salary = 1.5;
 	private String address;
 	
 	private LocalDate joinDate;
-    private int monthWorkingInYear;
+    int monthWorkedThisYear = calculateMonthWork();
 	
 	private boolean isForeigner;
 	private Gender gender; 
