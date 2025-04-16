@@ -10,9 +10,19 @@ import java.util.List;
 public class Employee {
 
 	public enum EmployeeGrade {
-	grade_1,
-	grade_2,
-	grade_3
+    grade_1(3000000),
+    grade_2(5000000),
+    grade_3(7000000);
+
+    private final int baseSalary;
+
+    EmployeeGrade(int baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+
+    public int getBaseSalary() {
+        return baseSalary;
+    }
 }
 	public enum Gender {
 		MALE,
@@ -61,29 +71,13 @@ private static final double foreigner_salary = 1.5;
 	 * Jika pegawai adalah warga negara asing gaji bulanan diperbesar sebanyak 50%
 	 */
 	
-	public void setMonthlySalary(int grade) {	
-		int newSalary;
-
-		switch (grade) {
-			case grade_1:
-				newSalary = grade_1_salary;
-				break;
-			case grade_2:
-				newSalary = grade_2_salary;
-				break;
-			case grade_3:
-				newSalary = grade_3_salary;
-				break;
-			default:
-				throw new IllegalArgumentException("employee grade tidak diketahui: " + grade);
-		}
-
-		if (isForeigner) {
-			newSalary = (int) (newSalary * foreigner_salary);
-		}
-
-		this.monthlySalary = newSalary;
-		}
+	public void setMonthlySalary(EmployeeGrade grade) {
+    int newSalary = grade.getBaseSalary();
+    if (isForeigner) {
+        newSalary *= foreigner_salary;
+    }
+    this.monthlySalary = newSalary;
+}
 	
 		public void setAnnualDeductible(int deductible) {
 			this.annualDeductible = deductible;
