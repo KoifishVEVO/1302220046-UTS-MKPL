@@ -15,7 +15,7 @@ public class TaxFunction {
 	 */
 	
 	
-	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
+	public static int calculateTax(FinancialDetails financialDetails, FamilyStatus familyStatus, int numberOfMonthWorking) {
 		
 		int tax = 0;
 		
@@ -41,4 +41,44 @@ public class TaxFunction {
 			 
 	}
 	
+		public class FinancialDetails {
+		private final int monthlySalary;
+		private final int otherMonthlyIncome;
+		private final int deductible;
+
+		public FinancialDetails(int monthlySalary, int otherMonthlyIncome, int deductible) {
+			this.monthlySalary = monthlySalary;
+			this.otherMonthlyIncome = otherMonthlyIncome;
+			this.deductible = deductible;
+		}
+
+		public int getMonthlySalary() {
+			return monthlySalary;
+		}
+
+		public int getOtherMonthlyIncome() {
+			return otherMonthlyIncome;
+		}
+
+		public int getDeductible() {
+			return deductible;
+		}
+	}
+		public class FamilyStatus {
+		private final boolean isMarried;
+		private final int numberOfChildren;
+
+		public FamilyStatus(boolean isMarried, int numberOfChildren) {
+			this.isMarried = isMarried;
+			this.numberOfChildren = numberOfChildren;
+		}
+
+		public boolean isMarried() {
+			return isMarried;
+		}
+
+		public int getNumberOfChildren() {
+			return numberOfChildren;
+		}
+	}
 }
