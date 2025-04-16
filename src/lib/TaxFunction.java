@@ -14,32 +14,45 @@ public class TaxFunction {
 	 * 
 	 */
 	
+    private static final double tax_rate = 0.05;
+    private static final int non_tax_income = 54000000;
+    private static final int deduction_marriage = 4500000;
+    private static final int deduction_child = 1500000;
+    private static final int max_children_for_deduction= 3;
+	
 	
 	public static int calculateTax(FinancialDetails financialDetails, FamilyStatus familyStatus, int numberOfMonthWorking) {
 		
-		int tax = 0;
-		
-		if (numberOfMonthWorking > 12) {
-			System.err.println("More than 12 month working per year");
-		}
-		
-		if (numberOfChildren > 3) {
-			numberOfChildren = 3;
-		}
-		
-		if (isMarried) {
-			tax = (int) Math.round(0.05 * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - (54000000 + 4500000 + (numberOfChildren * 1500000))));
-		}else {
-			tax = (int) Math.round(0.05 * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - 54000000));
-		}
-		
-		if (tax < 0) {
-			return 0;
-		}else {
-			return tax;
-		}
+		 int tax = 0;
+
+        if (numberOfMonthWorking > 12) {
+            System.err.println("More than 12 months working per year");
+        }
+
+        int numberOfChildren = familyStatus.getNumberOfChildren();
+        if (numberOfChildren > max_children_for_deduction) {
+            numberOfChildren = max_children_for_deduction;
+        }
+
+        int nonTaxableIncome = non_tax_income;
+        if (familyStatus.isMarried()) {
+            nonTaxableIncome += deduction_marriage;
+        }
+        nonTaxableIncome += numberOfChildren * deduction_child;
+
+        int totalAnnualIncome = (financialDetails.getMonthlySalary() + financialDetails.getOtherMonthlyIncome()) * numberOfMonthWorking;
+        int taxableIncome = totalAnnualIncome - financialDetails.getDeductible() - nonTaxableIncome;
+
+        tax = (int) Math.round(tax_rate * taxableIncome);
+
+        if (tax < 0) {
+            return 0;
+        } else {
+            return tax;
+        }
+    }
 			 
-	}
+	
 	
 		public class FinancialDetails {
 		private final int monthlySalary;
