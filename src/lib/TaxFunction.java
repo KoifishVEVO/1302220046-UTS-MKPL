@@ -21,35 +21,46 @@ public class TaxFunction {
     private static final int max_children_for_deduction= 3;
 	
 	
-	public static int calculateTax(FinancialDetails financialDetails, FamilyStatus familyStatus, int numberOfMonthWorking) {
-		
-		 int tax = 0;
+		public static int calculateTax(FinancialDetails financialDetails, FamilyStatus familyStatus, int numberOfMonthWorking) {
+			validateMonthWorking(numberOfMonthWorking);
 
-        if (numberOfMonthWorking > 12) {
-            System.err.println("More than 12 months working per year");
-        }
+			int numberOfChildren = limitChildrenForDeduction(familyStatus.getNumberOfChildren());
+			int nonTaxableIncome = calculateNonTaxableIncome(familyStatus.isMarried(), numberOfChildren);
+			int totalAnnualIncome = calculateTotalAnnualIncome(financialDetails, numberOfMonthWorking);
+			int taxableIncome = totalAnnualIncome - financialDetails.getDeductible() - nonTaxableIncome;
 
-        int numberOfChildren = familyStatus.getNumberOfChildren();
-        if (numberOfChildren > max_children_for_deduction) {
-            numberOfChildren = max_children_for_deduction;
-        }
+			return calculateFinalTax(taxableIncome);
+		}
 
-        int nonTaxableIncome = non_tax_income;
-        if (familyStatus.isMarried()) {
-            nonTaxableIncome += deduction_marriage;
-        }
-        nonTaxableIncome += numberOfChildren * deduction_child;
+		private static void validateMonthWorking(int numberOfMonthWorking) {
+			if (numberOfMonthWorking > 12) {
+				System.err.println("More than 12 months working per year");
+			}
+		}
 
-        int totalAnnualIncome = (financialDetails.getMonthlySalary() + financialDetails.getOtherMonthlyIncome()) * numberOfMonthWorking;
-        int taxableIncome = totalAnnualIncome - financialDetails.getDeductible() - nonTaxableIncome;
+		private static int limitChildrenForDeduction(int numberOfChildren) {
+			return Math.min(numberOfChildren, max_children_for_deduction);
+		}
 
-        tax = (int) Math.round(tax_rate * taxableIncome);
+		private static int calculateNonTaxableIncome(boolean isMarried, int numberOfChildren) {
+			int nonTaxable = non_tax_income;
+			if (isMarried) {
+				nonTaxable += deduction_marriage;
+			}
+			nonTaxable += numberOfChildren * deduction_child;
+			return nonTaxable;
+		}
 
-        if (tax < 0) {
-            return 0;
-        } else {
-            return tax;
-        }
+		private static int calculateTotalAnnualIncome(FinancialDetails financialDetails, int monthsWorked) {
+			return (financialDetails.getMonthlySalary() + financialDetails.getOtherMonthlyIncome()) * monthsWorked;
+		}
+
+		private static int calculateFinalTax(int taxableIncome) {
+			if (taxableIncome <= 0) {
+				return 0;
+			}
+			return (int) Math.round(tax_rate * taxableIncome);
+		}
     }
 			 
 	
