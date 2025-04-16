@@ -87,13 +87,14 @@ private static final double foreigner_salary = 1.5;
 			this.otherMonthlyIncome = income;
 		}
 	
-		public void setSpouse(String name, String idNumber) {
-			this.spouse = new Spouse(name, idNumber);
+		public void setSpouse(Person spouse) {
+		this.spouse = new Spouse(spouse.name, spouse.idNumber);
 		}
-	
-		public void addChild(String name, String idNumber) {
-			children.add(new Child(name, idNumber));
+
+		public void addChild(Person child) {
+			children.add(new Child(child.name, child.idNumber));
 		}
+
 	
 	
 	private int calculateMonthWork() {
