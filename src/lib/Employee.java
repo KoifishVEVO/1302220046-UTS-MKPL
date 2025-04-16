@@ -5,10 +5,7 @@ import java.time.Month;
 import java.util.LinkedList;
 import java.util.List;
 
-public enum Gender {
-	MALE,
-	FEMALE
-}
+
 
 public class Employee {
 
@@ -17,7 +14,10 @@ public class Employee {
 	grade_2,
 	grade_3
 }
-
+	public enum Gender {
+		MALE,
+		FEMALE
+	}
 private static final int grade_1_salary = 3000000;
 private static final int grade_2_salary = 5000000;
 private static final int grade_3_salary = 7000000;
@@ -101,20 +101,26 @@ private static final double foreigner_salary = 1.5;
 			children.add(new Child(name, idNumber));
 		}
 	
+	
+	private int calculateMonthWork() {
+    LocalDate currentDate = LocalDate.now();
+    if (currentDate.getYear() == joinDate.getYear()) {
+        return currentDate.getMonthValue() - joinDate.getMonthValue();
+    }
+    return 12;
+}
+	
+	
 	public int getAnnualIncomeTax() {
-		
 		//Menghitung berapa lama pegawai bekerja dalam setahun ini, jika pegawai sudah bekerja dari tahun sebelumnya maka otomatis dianggap 12 bulan.
-		LocalDate currentDate = LocalDate.now();
-        if (currentDate.getYear() == joinDate.getYear()) {
-            monthWorkingInYear = currentDate.getMonthValue() - joinDate.getMonthValue();
-        } else {
-            monthWorkingInYear = 12;
-        }
-
-        boolean hasNoSpouse = (spouse == null);
-        return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear,
-                annualDeductible, hasNoSpouse, children.size());
-	}
+    monthWorkingInYear = calculateMonthWork();
+    boolean hasNoSpouse = (spouse == null);
+    return TaxFunction.calculateTax(
+        monthlySalary, otherMonthlyIncome,
+        monthWorkingInYear, annualDeductible,
+        hasNoSpouse, children.size()
+    );
+}
 
 
 	public static class Person {
